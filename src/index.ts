@@ -1,13 +1,22 @@
-const express = require("express");
+import express, { Request, Response } from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
+import bloggersRouter from "./routes/bloggersRoutes";
 
 const app = express();
 
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 5000;
 
-app.get("/", (req: any, res: any) => {
-    res.send("check back 333")
+app.use(cors());
+
+app.use(bodyParser.json());
+
+app.use("/bloggers", bloggersRouter)
+
+app.get("/", (req: Request, res: Response) => {
+  res.send("check back 777");
 });
 
 app.listen(port, () => {
-    console.log(`app has startd on ${port} app`)
-})
+  console.log(`app has startd on ${port} app`);
+});
