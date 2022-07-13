@@ -8,6 +8,6 @@ app.get("/", (req: any, res: any) => {
     res.send("check back 222")
 });
 
-app.listen(5000, () => {
+app.listen(props, () => {
     console.log(`app has startd on ${props} app`)
 })
