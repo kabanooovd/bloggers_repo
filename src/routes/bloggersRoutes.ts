@@ -6,6 +6,10 @@ const bloggersRouter = Router({});
 
 const bloggers = bloggers_db;
 
+const pattern = new RegExp(
+  /^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/
+);
+
 bloggersRouter.get("/", (req: Request, res: Response) => {
   res.send(bloggers);
 });
@@ -27,10 +31,6 @@ bloggersRouter.post("/", (req: Request, res: Response) => {
   if (!youtubeUrl || youtubeUrl.length > 100)
     errorHandler(res, 400, "some message...", "youtubeUrl");
 
-  const pattern = new RegExp(
-    /^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/watch\?v\=\w+$/
-  );
-
   if (!pattern.test(youtubeUrl))
     errorHandler(res, 400, "some message...", "youtubeUrl");
 
@@ -40,7 +40,7 @@ bloggersRouter.post("/", (req: Request, res: Response) => {
     youtubeUrl,
   };
 
-  bloggers.push(newBlogger)
+  bloggers.push(newBlogger);
   res.status(201).send(newBlogger);
 });
 
@@ -54,10 +54,6 @@ bloggersRouter.put("/:id", (req: Request, res: Response) => {
     errorHandler(res, 400, "some message...", "name");
   if (!youtubeUrl || youtubeUrl.length > 100)
     errorHandler(res, 400, "some message...", "youtubeUrl");
-
-  const pattern = new RegExp(
-    /^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/watch\?v\=\w+$/
-  );
 
   if (!pattern.test(youtubeUrl))
     errorHandler(res, 400, "some message...", "youtubeUrl");
