@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use("/bloggers", bloggersRouter)
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("check back 777");
+  res.send("dimas test 11111");
 });
 
 app.listen(port, () => {

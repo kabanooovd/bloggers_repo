@@ -34,11 +34,14 @@ bloggersRouter.post("/", (req: Request, res: Response) => {
   if (!pattern.test(youtubeUrl))
     errorHandler(res, 400, "some message...", "youtubeUrl");
 
-  res.status(201).send({
+  const newBlogger = {
     id: newId,
     name,
     youtubeUrl,
-  });
+  };
+
+  bloggers.push(newBlogger)
+  res.status(201).send(newBlogger);
 });
 
 bloggersRouter.put("/:id", (req: Request, res: Response) => {
