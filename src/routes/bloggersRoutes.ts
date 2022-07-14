@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { bloggers_db } from "../bloggers_db";
+import { bloggers_db } from "../common_db";
 import { errorHandler } from "../utiles/errorHandler";
 
 const bloggersRouter = Router({});
