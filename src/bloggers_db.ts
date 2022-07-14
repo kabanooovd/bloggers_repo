@@ -1,8 +1,4 @@
-interface IBloggers {
-  id: number;
-  name: string;
-  youtubeUrl: string;
-}
+import { IBloggers } from "./types";
 
 export const bloggers_db: IBloggers[] = [
   {
