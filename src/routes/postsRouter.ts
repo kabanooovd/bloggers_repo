@@ -89,6 +89,11 @@ postsRouter.put("/:id", (req: Request, res: Response) => {
 
   const errors: any[] = [];
 
+  if (!foundPost) {
+    res.status(404).send("Not Found");
+    return
+  }
+
   if (
     !title.replace(/^\s+|\s+$|\s+(?=\s)/g, "") ||
     !title ||
