@@ -98,6 +98,7 @@ postsRouter.put("/:id", (req: Request, res: Response) => {
 
   if (errors.length) {
     errorHandler(res, 400, "some message...", "bloggerId", errors);
+    return
   }
 
   if (foundPost) {
