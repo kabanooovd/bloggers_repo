@@ -26,21 +26,21 @@ bloggersRouter.post("/", (req: Request, res: Response) => {
 
   const newId = Number(new Date());
 
-  let errors = [];
+  let errors: any[] = [];
 
   if (!name || !name.replace(/^\s+|\s+$|\s+(?=\s)/g, "") || name.length > 15) {
-    errors.push({ message: "111", field: "name" });
-    //errorHandler(res, 400, "some message...", "name");
+    const dublicate = errors.find(el => el.field === "name")
+    !dublicate && errors.push({ message: "111", field: "name" });
   }
 
   if (!youtubeUrl || youtubeUrl.length > 100) {
-    // errorHandler(res, 400, "some message...", "youtubeUrl");
-    errors.push({ message: "222", field: "youtubeUrl" });
+    const dublicate = errors.find(el => el.field === "youtubeUrl")
+    !dublicate && errors.push({ message: "222", field: "youtubeUrl" });
   }
 
   if (!pattern.test(youtubeUrl)) {
-    // errorHandler(res, 400, "some message...", "youtubeUrl");
-    errors.push({ message: "333", field: "youtubeUrl" });
+    const dublicate = errors.find(el => el.field === "youtubeUrl")
+    !dublicate && errors.push({ message: "333", field: "youtubeUrl" });
   }
 
   if (errors.length) {
