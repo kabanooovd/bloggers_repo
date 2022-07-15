@@ -1,7 +1,10 @@
 import { Request, Response, Router } from "express";
 import { bloggers_db, posts_db } from "../common_db";
 import { IPosts } from "../types";
-import { errorHandler } from "../utiles/errorHandler";
+import {
+  checkDublicationErrorMessage,
+  errorHandler,
+} from "../utiles/errorHandler";
 
 const postsRouter = Router({});
 
@@ -22,20 +25,50 @@ postsRouter.get("/:id", (req: Request, res: Response) => {
 postsRouter.post("/", (req: Request, res: Response) => {
   const { title, shortDescription, content, bloggerId } = req.body;
 
-  if (!title || title.length > 30)
-    errorHandler(res, 400, "some message...", "title");
-
-  if (!shortDescription || shortDescription.length > 100)
-    errorHandler(res, 400, "some message...", "shortDescription");
-
-  if (!content || content.length > 1000)
-    errorHandler(res, 400, "some message...", "content");
-
-  if (!bloggerId || typeof bloggerId !== "number")
-    errorHandler(res, 400, "some message...", "bloggerId");
-
   const foundBlogger = bloggers.find((item) => item.id === bloggerId);
-  if (!foundBlogger) res.status(404).send("Not Found");
+  if (!foundBlogger) {
+    res.status(404).send("Not Found");
+    return;
+  }
+
+  let errors: any[] = [];
+
+  if (
+    !title ||
+    !title.replace(/^\s+|\s+$|\s+(?=\s)/g, "") ||
+    title.length > 30
+  ) {
+    checkDublicationErrorMessage(errors, "title", "111");
+  }
+
+  if (
+    !shortDescription ||
+    !title.replace(/^\s+|\s+$|\s+(?=\s)/g, "") ||
+    shortDescription.length > 100
+  ) {
+    checkDublicationErrorMessage(errors, "shortDescription", "222");
+  }
+
+  if (
+    !content ||
+    !title.replace(/^\s+|\s+$|\s+(?=\s)/g, "") ||
+    content.length > 1000
+  ) {
+    checkDublicationErrorMessage(errors, "content", "333");
+  }
+
+  if (
+    !bloggerId ||
+    !title.replace(/^\s+|\s+$|\s+(?=\s)/g, "") ||
+    typeof bloggerId !== "number"
+  ) {
+    checkDublicationErrorMessage(errors, "bloggerId", "444");
+  }
+
+  if (errors.length) {
+    errorHandler(res, 400, "some message...", "youtubeUrl", errors);
+    return;
+  }
 
   if (foundBlogger) {
     const newId = Number(new Date());
@@ -65,42 +98,35 @@ postsRouter.put("/:id", (req: Request, res: Response) => {
   }
 
   const foundBlogger = bloggers.find((item) => item.id === bloggerId);
-  if (!foundBlogger)
-    return res
+  if (!foundBlogger) {
+    res
       .status(400)
       .send({ errorMessages: [{ message: "123", field: "bloggerId" }] });
-
-  const errors = [];
-
-  if (!title || title.length > 30)
-    errors.push({
-      message: "111",
-      field: "title",
-    });
-
-  if (!shortDescription || shortDescription.length > 100)
-    errors.push({
-      message: "222",
-      field: "shortDescription",
-    });
-
-  if (!content || content.length > 1000)
-    errors.push({
-      message: "333",
-      field: "content",
-    });
-
-  if (!bloggerId || typeof bloggerId !== "number")
-    errors.push({
-      message: "111",
-      field: "bloggerId",
-    });
-
-  if (errors.length) {
-    errorHandler(res, 400, "some message...", "bloggerId", errors);
-    return
+    return;
   }
 
+  const errors: any[] = [];
+
+  if (!title || title.length > 30) {
+    checkDublicationErrorMessage(errors, "title", "111");
+  }
+
+  if (!shortDescription || shortDescription.length > 100) {
+    checkDublicationErrorMessage(errors, "shortDescription", "222");
+  }
+
+  if (!content || content.length > 1000) {
+    checkDublicationErrorMessage(errors, "content", "333");
+  }
+
+  if (!bloggerId || typeof bloggerId !== "number") {
+    checkDublicationErrorMessage(errors, "bloggerId", "444");
+  }
+
+  if (errors.length) {
+    errorHandler(res, 400, "some message...", "youtubeUrl", errors);
+    return;
+  }
   if (foundPost) {
     foundPost.title = title;
     foundPost.shortDescription = shortDescription;
