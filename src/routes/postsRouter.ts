@@ -58,23 +58,47 @@ postsRouter.put("/:id", (req: Request, res: Response) => {
   const { title, shortDescription, content, bloggerId } = req.body;
   const { id } = req.params;
 
-  const foundBlogger = bloggers.find((item) => item.id === bloggerId);
-  if (!foundBlogger) res.status(404).send("Not Found");
-
   const foundPost = posts.find((item) => item.id === Number(id));
-  if (!foundPost) res.status(404).send("Not Found");
+
+  if (!foundPost) {
+    return res.status(404).send("Not Found");
+  }
+
+  const foundBlogger = bloggers.find((item) => item.id === bloggerId);
+  if (!foundBlogger)
+    return res
+      .status(400)
+      .send({ errorMessages: [{ message: "123", field: "bloggerId" }] });
+
+  const errors = [];
 
   if (!title || title.length > 30)
-    errorHandler(res, 400, "some message...", "title");
+    errors.push({
+      message: "111",
+      field: "title",
+    });
 
   if (!shortDescription || shortDescription.length > 100)
-    errorHandler(res, 400, "some message...", "shortDescription");
+    errors.push({
+      message: "222",
+      field: "shortDescription",
+    });
 
   if (!content || content.length > 1000)
-    errorHandler(res, 400, "some message...", "content");
+    errors.push({
+      message: "333",
+      field: "content",
+    });
 
   if (!bloggerId || typeof bloggerId !== "number")
-    errorHandler(res, 400, "some message...", "bloggerId");
+    errors.push({
+      message: "111",
+      field: "bloggerId",
+    });
+
+  if (errors.length) {
+    errorHandler(res, 400, "some message...", "bloggerId", errors);
+  }
 
   if (foundPost) {
     foundPost.title = title;
@@ -94,6 +118,6 @@ postsRouter.delete("/:id", (req: Request, res: Response) => {
     posts.splice(currentIndex, currentIndex + 1);
     res.status(204).send(posts);
   }
-})
+});
 
 export default postsRouter;

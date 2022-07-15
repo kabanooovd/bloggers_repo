@@ -26,8 +26,15 @@ bloggersRouter.post("/", (req: Request, res: Response) => {
 
   const newId = Number(new Date());
 
-  if (!name || name.length > 15)
-    errorHandler(res, 400, "some message...", "name");
+  let errors = []
+
+  if (!name || name.length > 15) {
+    errors.push({message: '123',
+      field: 'name',})
+    //errorHandler(res, 400, "some message...", "name");
+  }
+    
+
   if (!youtubeUrl || youtubeUrl.length > 100)
     errorHandler(res, 400, "some message...", "youtubeUrl");
 
