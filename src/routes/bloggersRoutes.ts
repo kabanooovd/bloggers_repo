@@ -1,6 +1,9 @@
 import { Request, Response, Router } from "express";
 import { bloggers_db } from "../common_db";
-import { errorHandler } from "../utiles/errorHandler";
+import {
+  checkDublicationErrorMessage,
+  errorHandler,
+} from "../utiles/errorHandler";
 
 const bloggersRouter = Router({});
 
@@ -29,23 +32,20 @@ bloggersRouter.post("/", (req: Request, res: Response) => {
   let errors: any[] = [];
 
   if (!name || !name.replace(/^\s+|\s+$|\s+(?=\s)/g, "") || name.length > 15) {
-    const dublicate = errors.find(el => el.field === "name")
-    !dublicate && errors.push({ message: "111", field: "name" });
+    checkDublicationErrorMessage(errors, "name", "111");
   }
 
   if (!youtubeUrl || youtubeUrl.length > 100) {
-    const dublicate = errors.find(el => el.field === "youtubeUrl")
-    !dublicate && errors.push({ message: "222", field: "youtubeUrl" });
+    checkDublicationErrorMessage(errors, "youtubeUrl", "222");
   }
 
   if (!pattern.test(youtubeUrl)) {
-    const dublicate = errors.find(el => el.field === "youtubeUrl")
-    !dublicate && errors.push({ message: "333", field: "youtubeUrl" });
+    checkDublicationErrorMessage(errors, "youtubeUrl", "333");
   }
 
   if (errors.length) {
     errorHandler(res, 400, "some message...", "youtubeUrl", errors);
-    return
+    return;
   }
 
   const newBlogger = {
@@ -63,14 +63,28 @@ bloggersRouter.put("/:id", (req: Request, res: Response) => {
   const { id } = req.params;
 
   const foundBlogger = bloggers.find((item) => item.id === Number(id));
-  if (!foundBlogger) res.status(404).send("Not Found");
-  if (!name || name.length > 15)
-    errorHandler(res, 400, "some message...", "name");
-  if (!youtubeUrl || youtubeUrl.length > 100)
-    errorHandler(res, 400, "some message...", "youtubeUrl");
+  if (!foundBlogger) {
+    res.status(404).send("Not Found");
+    return
+  }
 
-  if (!pattern.test(youtubeUrl))
-    errorHandler(res, 400, "some message...", "youtubeUrl");
+  let errors: any[] = [];
+
+  if (!name || !name.replace(/^\s+|\s+$|\s+(?=\s)/g, "") || name.length > 15) {
+    checkDublicationErrorMessage(errors, "name", "111");
+  }
+  if (!youtubeUrl || youtubeUrl.length > 100) {
+    checkDublicationErrorMessage(errors, "youtubeUrl", "222");
+  }
+
+  if (!pattern.test(youtubeUrl)) {
+    checkDublicationErrorMessage(errors, "youtubeUrl", "333");
+  }
+
+  if (errors.length) {
+    errorHandler(res, 400, "some message...", "youtubeUrl", errors);
+    return;
+  }
 
   if (foundBlogger) {
     foundBlogger.name = name;
