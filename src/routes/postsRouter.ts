@@ -26,10 +26,10 @@ postsRouter.post("/", (req: Request, res: Response) => {
   const { title, shortDescription, content, bloggerId } = req.body;
 
   const foundBlogger = bloggers.find((item) => item.id === bloggerId);
-  if (!foundBlogger) {
-    res.status(404).send("Not Found");
-    return;
-  }
+  // if (!foundBlogger) {
+  //   res.status(404).send("Not Found");
+  //   return;
+  // }
 
   let errors: any[] = [];
 
@@ -57,7 +57,7 @@ postsRouter.post("/", (req: Request, res: Response) => {
     checkDublicationErrorMessage(errors, "content", "333");
   }
 
-  if (!bloggerId || typeof bloggerId !== "number") {
+  if (!foundBlogger || !bloggerId || typeof bloggerId !== "number") {
     checkDublicationErrorMessage(errors, "bloggerId", "444");
   }
 
