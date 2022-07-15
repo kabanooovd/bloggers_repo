@@ -43,7 +43,7 @@ postsRouter.post("/", (req: Request, res: Response) => {
 
   if (
     !shortDescription ||
-    !title.replace(/^\s+|\s+$|\s+(?=\s)/g, "") ||
+    !shortDescription.replace(/^\s+|\s+$|\s+(?=\s)/g, "") ||
     shortDescription.length > 100
   ) {
     checkDublicationErrorMessage(errors, "shortDescription", "222");
@@ -51,17 +51,13 @@ postsRouter.post("/", (req: Request, res: Response) => {
 
   if (
     !content ||
-    !title.replace(/^\s+|\s+$|\s+(?=\s)/g, "") ||
+    !content.replace(/^\s+|\s+$|\s+(?=\s)/g, "") ||
     content.length > 1000
   ) {
     checkDublicationErrorMessage(errors, "content", "333");
   }
 
-  if (
-    !bloggerId ||
-    !title.replace(/^\s+|\s+$|\s+(?=\s)/g, "") ||
-    typeof bloggerId !== "number"
-  ) {
+  if (!bloggerId || typeof bloggerId !== "number") {
     checkDublicationErrorMessage(errors, "bloggerId", "444");
   }
 
