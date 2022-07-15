@@ -89,15 +89,27 @@ postsRouter.put("/:id", (req: Request, res: Response) => {
 
   const errors: any[] = [];
 
-  if (!title || title.length > 30) {
+  if (
+    !title.replace(/^\s+|\s+$|\s+(?=\s)/g, "") ||
+    !title ||
+    title.length > 30
+  ) {
     checkDublicationErrorMessage(errors, "title", "111");
   }
 
-  if (!shortDescription || shortDescription.length > 100) {
+  if (
+    !shortDescription.replace(/^\s+|\s+$|\s+(?=\s)/g, "") ||
+    !shortDescription ||
+    shortDescription.length > 100
+  ) {
     checkDublicationErrorMessage(errors, "shortDescription", "222");
   }
 
-  if (!content || content.length > 1000) {
+  if (
+    !content.replace(/^\s+|\s+$|\s+(?=\s)/g, "") ||
+    !content ||
+    content.length > 1000
+  ) {
     checkDublicationErrorMessage(errors, "content", "333");
   }
 

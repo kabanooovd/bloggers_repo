@@ -20,7 +20,10 @@ bloggersRouter.get("/", (req: Request, res: Response) => {
 bloggersRouter.get("/:id", (req: Request, res: Response) => {
   const { id } = req.params;
   const foundBlogger = bloggers.find((item) => item.id === Number(id));
-  if (!foundBlogger) res.status(404).send("Not Found");
+  if (!foundBlogger) {
+    res.status(404).send("Not Found");
+    return;
+  }
   res.send(foundBlogger);
 });
 
@@ -65,7 +68,7 @@ bloggersRouter.put("/:id", (req: Request, res: Response) => {
   const foundBlogger = bloggers.find((item) => item.id === Number(id));
   if (!foundBlogger) {
     res.status(404).send("Not Found");
-    return
+    return;
   }
 
   let errors: any[] = [];
@@ -98,7 +101,10 @@ bloggersRouter.delete("/:id", (req: Request, res: Response) => {
   const { id } = req.params;
   const foundItem = bloggers.find((item) => +id === item.id);
 
-  if (!foundItem) res.status(404).send();
+  if (!foundItem) {
+    res.status(404).send();
+    return;
+  }
 
   if (foundItem) {
     const currentIndex = bloggers.indexOf(foundItem);
