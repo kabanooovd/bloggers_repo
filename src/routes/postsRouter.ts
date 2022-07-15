@@ -58,6 +58,9 @@ postsRouter.put("/:id", (req: Request, res: Response) => {
   const { title, shortDescription, content, bloggerId } = req.body;
   const { id } = req.params;
 
+  const foundBlogger = bloggers.find((item) => item.id === bloggerId);
+  if (!foundBlogger) res.status(404).send("Not Found");
+
   const foundPost = posts.find((item) => item.id === Number(id));
   if (!foundPost) res.status(404).send("Not Found");
 
