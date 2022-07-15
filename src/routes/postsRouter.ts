@@ -86,12 +86,6 @@ postsRouter.put("/:id", (req: Request, res: Response) => {
   const foundPost = posts.find((item) => item.id === Number(id));
 
   const foundBlogger = bloggers.find((item) => item.id === bloggerId);
-  if (!foundBlogger) {
-    res
-      .status(400)
-      .send({ errorMessages: [{ message: "123", field: "bloggerId" }] });
-    return;
-  }
 
   const errors: any[] = [];
 
@@ -107,7 +101,7 @@ postsRouter.put("/:id", (req: Request, res: Response) => {
     checkDublicationErrorMessage(errors, "content", "333");
   }
 
-  if (!foundPost || !bloggerId || typeof bloggerId !== "number") {
+  if (!foundBlogger || !bloggerId || typeof bloggerId !== "number") {
     checkDublicationErrorMessage(errors, "bloggerId", "444");
   }
 
