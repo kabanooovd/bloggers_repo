@@ -28,7 +28,7 @@ bloggersRouter.post("/", (req: Request, res: Response) => {
 
   let errors = [];
 
-  if (!name.replace(/^\s+|\s+$|\s+(?=\s)/g, "") || name.length > 15) {
+  if (!name || !name.replace(/^\s+|\s+$|\s+(?=\s)/g, "") || name.length > 15) {
     errors.push({ message: "111", field: "name" });
     //errorHandler(res, 400, "some message...", "name");
   }
