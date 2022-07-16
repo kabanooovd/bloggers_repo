@@ -105,24 +105,24 @@ postsRouter.put("/:id", (req: Request, res: Response) => {
   }
 
   if (
-    !title.replace(/^\s+|\s+$|\s+(?=\s)/g, "") ||
-    !title ||
+    !Object.keys(req.body).includes("title") ||
+    !title.trim() ||
     title.length > 30
   ) {
     checkDublicationErrorMessage(errors, "title", "111");
   }
 
   if (
-    !shortDescription.replace(/^\s+|\s+$|\s+(?=\s)/g, "") ||
-    !shortDescription ||
+    !Object.keys(req.body).includes("shortDescription") ||
+    !shortDescription.trim() ||
     shortDescription.length > 100
   ) {
     checkDublicationErrorMessage(errors, "shortDescription", "222");
   }
 
   if (
-    !content.replace(/^\s+|\s+$|\s+(?=\s)/g, "") ||
-    !content ||
+    !Object.keys(req.body).includes("content") ||
+    !content.trim() ||
     content.length > 1000
   ) {
     checkDublicationErrorMessage(errors, "content", "333");
