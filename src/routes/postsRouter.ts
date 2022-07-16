@@ -43,10 +43,6 @@ postsRouter.post("/", (req: Request, res: Response, next: NextFunction) => {
 
   let errors: any[] = [];
 
-  // if (!Object.keys(req.body).includes("shortDescription")) {
-  //   checkDublicationErrorMessage(errors, "shortDescription", "777");
-  // }
-
   if (
     !Object.keys(req.body).includes("title") ||
     !title.trim() ||
