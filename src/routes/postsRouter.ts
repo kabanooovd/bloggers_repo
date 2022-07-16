@@ -11,15 +11,6 @@ const postsRouter = Router({});
 const posts = posts_db;
 const bloggers = bloggers_db;
 
-// const checkBody = (req: Request, res: Response, next: NextFunction) => {
-//   if (Object.keys(req.body).length !== 4) {
-//     res.status(400).send("BAD REQUEST");
-//     return;
-//   } else {
-//     next();
-//   }
-// };
-
 postsRouter.get("/", (req: Request, res: Response) => {
   res.send(posts);
 });
