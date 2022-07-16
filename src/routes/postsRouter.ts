@@ -27,11 +27,6 @@ postsRouter.post("/", (req: Request, res: Response, next: NextFunction) => {
 
   const foundBlogger = bloggers.find((item) => item.id === bloggerId);
 
-  if (!foundBlogger) {
-    res.status(404).send("Not Found");
-    return;
-  }
-
   let errors: any[] = [];
 
   if (
