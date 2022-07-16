@@ -1,4 +1,4 @@
-import { Request, Response, Router } from "express";
+import { NextFunction, Request, Response, Router } from "express";
 import { bloggers_db, posts_db } from "../common_db";
 import { IPosts } from "../types";
 import {
@@ -11,6 +11,15 @@ const postsRouter = Router({});
 const posts = posts_db;
 const bloggers = bloggers_db;
 
+// const checkBody = (req: Request, res: Response, next: NextFunction) => {
+//   if (Object.keys(req.body).length !== 4) {
+//     res.status(400).send("BAD REQUEST");
+//     return;
+//   } else {
+//     next();
+//   }
+// };
+
 postsRouter.get("/", (req: Request, res: Response) => {
   res.send(posts);
 });
@@ -22,38 +31,52 @@ postsRouter.get("/:id", (req: Request, res: Response) => {
   res.send(foundPost);
 });
 
-postsRouter.post("/", (req: Request, res: Response) => {
+postsRouter.post("/", (req: Request, res: Response, next: NextFunction) => {
   const { title, shortDescription, content, bloggerId } = req.body;
 
   const foundBlogger = bloggers.find((item) => item.id === bloggerId);
 
+  if (!foundBlogger) {
+    res.status(404).send("Not Found");
+    return;
+  }
+
   let errors: any[] = [];
 
+  // if (!Object.keys(req.body).includes("shortDescription")) {
+  //   checkDublicationErrorMessage(errors, "shortDescription", "777");
+  // }
+
   if (
-    !title ||
-    !title.replace(/^\s+|\s+$|\s+(?=\s)/g, "") ||
+    !Object.keys(req.body).includes("title") ||
+    !title.trim() ||
     title.length > 30
   ) {
     checkDublicationErrorMessage(errors, "title", "111");
   }
 
   if (
-    !shortDescription ||
-    !shortDescription.replace(/^\s+|\s+$|\s+(?=\s)/g, "") ||
+    !Object.keys(req.body).includes("shortDescription") ||
+    !shortDescription.trim() ||
     shortDescription.length > 100
   ) {
     checkDublicationErrorMessage(errors, "shortDescription", "222");
   }
 
   if (
-    !content ||
-    !content.replace(/^\s+|\s+$|\s+(?=\s)/g, "") ||
+    !Object.keys(req.body).includes("content") ||
+    !content.trim() ||
     content.length > 1000
   ) {
     checkDublicationErrorMessage(errors, "content", "333");
   }
 
-  if (!foundBlogger || !bloggerId || typeof bloggerId !== "number") {
+  if (
+    !Object.keys(req.body).includes("bloggerId") ||
+    !foundBlogger ||
+    !bloggerId ||
+    typeof bloggerId !== "number"
+  ) {
     checkDublicationErrorMessage(errors, "bloggerId", "444");
   }
 
@@ -91,7 +114,7 @@ postsRouter.put("/:id", (req: Request, res: Response) => {
 
   if (!foundPost) {
     res.status(404).send("Not Found");
-    return
+    return;
   }
 
   if (
