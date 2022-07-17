@@ -1,9 +1,12 @@
 import { Request, Response, Router } from "express";
+import { validationResult } from "express-validator";
 import { bloggers_db } from "../common_db";
-import {
-  checkDublicationErrorMessage,
-  errorHandler,
-} from "../utiles/errorHandler";
+import { blogger_validation_middleware } from "../middle-ware/error-handler-middleware";
+import { bloggerNameValidation, bloggerUrlValidation } from "../utiles/bloggersErrorHandler";
+// import {
+//   checkDublicationErrorMessage,
+//   errorHandler,
+// } from "../utiles/errorHandler";
 
 const bloggersRouter = Router({});
 
@@ -27,65 +30,38 @@ bloggersRouter.get("/:id", (req: Request, res: Response) => {
   res.send(foundBlogger);
 });
 
-bloggersRouter.post("/", (req: Request, res: Response) => {
-  const { name, youtubeUrl } = req.body;
+bloggersRouter.post(
+  "/",
+  bloggerNameValidation,
+  bloggerUrlValidation,
+  blogger_validation_middleware,
+  (req: Request, res: Response) => {
+    const { name, youtubeUrl } = req.body;
 
-  const newId = Number(new Date());
+    const newId = Number(new Date());
 
-  let errors: any[] = [];
+    const newBlogger = {
+      id: newId,
+      name,
+      youtubeUrl,
+    };
 
-  if (!name || !name.replace(/^\s+|\s+$|\s+(?=\s)/g, "") || name.length > 15) {
-    checkDublicationErrorMessage(errors, "name", "111");
+    bloggers.push(newBlogger);
+    res.status(201).send(newBlogger);
   }
+);
 
-  if (!youtubeUrl || youtubeUrl.length > 100) {
-    checkDublicationErrorMessage(errors, "youtubeUrl", "222");
-  }
-
-  if (!pattern.test(youtubeUrl)) {
-    checkDublicationErrorMessage(errors, "youtubeUrl", "333");
-  }
-
-  if (errors.length) {
-    errorHandler(res, 400, "some message...", "youtubeUrl", errors);
-    return;
-  }
-
-  const newBlogger = {
-    id: newId,
-    name,
-    youtubeUrl,
-  };
-
-  bloggers.push(newBlogger);
-  res.status(201).send(newBlogger);
-});
-
-bloggersRouter.put("/:id", (req: Request, res: Response) => {
+bloggersRouter.put("/:id", 
+bloggerNameValidation,
+bloggerUrlValidation,
+blogger_validation_middleware,
+(req: Request, res: Response) => {
   const { name, youtubeUrl } = req.body;
   const { id } = req.params;
 
   const foundBlogger = bloggers.find((item) => item.id === Number(id));
   if (!foundBlogger) {
     res.status(404).send("Not Found");
-    return;
-  }
-
-  let errors: any[] = [];
-
-  if (!name || !name.replace(/^\s+|\s+$|\s+(?=\s)/g, "") || name.length > 15) {
-    checkDublicationErrorMessage(errors, "name", "111");
-  }
-  if (!youtubeUrl || youtubeUrl.length > 100) {
-    checkDublicationErrorMessage(errors, "youtubeUrl", "222");
-  }
-
-  if (!pattern.test(youtubeUrl)) {
-    checkDublicationErrorMessage(errors, "youtubeUrl", "333");
-  }
-
-  if (errors.length) {
-    errorHandler(res, 400, "some message...", "youtubeUrl", errors);
     return;
   }
 
