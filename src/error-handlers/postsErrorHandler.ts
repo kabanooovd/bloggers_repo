@@ -20,6 +20,6 @@ export const postsTitleValidation = body("title")
 
 export const postsBloggerIdValidation = body("bloggerId")
   .isInt()
-  .custom(value => typeof value === "number")                 // If income val is Number
-  .custom(value => bloggers.map(b => b.id).includes(value))   // If income val is exist in bloggers lest
+  .custom((value) => typeof value === "number") // If income val is Number
+  .custom((value) => bloggers.map((b) => b.id).includes(value)) // If income val is exist in bloggers lest
   .withMessage("Some poblem with current user...");
