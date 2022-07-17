@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
-import { blogger_validation_middleware } from "../middle-ware/error-handler-middleware";
 import postsRepo from "../repositories/posts-repo";
 import postsErrorHandler from "../error-handlers/postsErrorHandler";
+import { authMiddleware } from "../middle-ware/auth-middleware";
 
 const postsRouter = Router({});
 
@@ -22,6 +22,7 @@ postsRouter.get("/:id", (req: Request, res: Response) => {
 
 postsRouter.post(
   "/",
+  authMiddleware,
   [...postsErrorHandler],
   (req: Request, res: Response) => {
     const { title, shortDescription, content, bloggerId } = req.body;
@@ -39,6 +40,7 @@ postsRouter.post(
 
 postsRouter.put(
   "/:id",
+  authMiddleware,
   [...postsErrorHandler],
   (req: Request, res: Response) => {
     const { title, shortDescription, content, bloggerId } = req.body;
@@ -55,7 +57,7 @@ postsRouter.put(
   }
 );
 
-postsRouter.delete("/:id", (req: Request, res: Response) => {
+postsRouter.delete("/:id", authMiddleware, (req: Request, res: Response) => {
   const { id } = req.params;
   const foundPost = postsRepo.removePost(+id);
   if (!foundPost) {

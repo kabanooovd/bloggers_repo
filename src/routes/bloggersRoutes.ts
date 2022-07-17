@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
-import { blogger_validation_middleware } from "../middle-ware/error-handler-middleware";
 import bloggersRepo from "../repositories/bloggers-repo";
 import bloggersErrorHandler from "../error-handlers/bloggersErrorHandler";
+import { authMiddleware } from "../middle-ware/auth-middleware";
 
 const bloggersRouter = Router({});
 
@@ -22,6 +22,7 @@ bloggersRouter.get("/:id", (req: Request, res: Response) => {
 
 bloggersRouter.post(
   "/",
+  authMiddleware,
   [...bloggersErrorHandler],
   (req: Request, res: Response) => {
     const { name, youtubeUrl } = req.body;
@@ -32,6 +33,7 @@ bloggersRouter.post(
 
 bloggersRouter.put(
   "/:id",
+  authMiddleware,
   [...bloggersErrorHandler],
   (req: Request, res: Response) => {
     const { name, youtubeUrl } = req.body;
@@ -46,7 +48,7 @@ bloggersRouter.put(
   }
 );
 
-bloggersRouter.delete("/:id", (req: Request, res: Response) => {
+bloggersRouter.delete("/:id", authMiddleware, (req: Request, res: Response) => {
   const { id } = req.params;
   const foundItem = bloggersRepo.removeBlogger(+id);
 
