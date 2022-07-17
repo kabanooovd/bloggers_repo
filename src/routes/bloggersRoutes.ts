@@ -1,10 +1,7 @@
 import { Request, Response, Router } from "express";
 import { blogger_validation_middleware } from "../middle-ware/error-handler-middleware";
 import bloggersRepo from "../repositories/bloggers-repo";
-import {
-  bloggerNameValidation,
-  bloggerUrlValidation,
-} from "../error-handlers/bloggersErrorHandler";
+import bloggersErrorHandler from "../error-handlers/bloggersErrorHandler";
 
 const bloggersRouter = Router({});
 
@@ -25,8 +22,7 @@ bloggersRouter.get("/:id", (req: Request, res: Response) => {
 
 bloggersRouter.post(
   "/",
-  bloggerNameValidation,
-  bloggerUrlValidation,
+  [...bloggersErrorHandler],
   blogger_validation_middleware,
   (req: Request, res: Response) => {
     const { name, youtubeUrl } = req.body;
@@ -37,8 +33,7 @@ bloggersRouter.post(
 
 bloggersRouter.put(
   "/:id",
-  bloggerNameValidation,
-  bloggerUrlValidation,
+  [...bloggersErrorHandler],
   blogger_validation_middleware,
   (req: Request, res: Response) => {
     const { name, youtubeUrl } = req.body;

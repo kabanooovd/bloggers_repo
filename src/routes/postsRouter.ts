@@ -1,14 +1,7 @@
 import { Request, Response, Router } from "express";
-import { bloggers_db, posts_db } from "../common_db";
 import { blogger_validation_middleware } from "../middle-ware/error-handler-middleware";
 import postsRepo from "../repositories/posts-repo";
-import { IPosts } from "../types";
-import {
-  postsBloggerIdValidation,
-  postsContentValidation,
-  postsShortDescriptionValidation,
-  postsTitleValidation,
-} from "../error-handlers/postsErrorHandler";
+import postsErrorHandler from "../error-handlers/postsErrorHandler";
 
 const postsRouter = Router({});
 
@@ -29,10 +22,7 @@ postsRouter.get("/:id", (req: Request, res: Response) => {
 
 postsRouter.post(
   "/",
-  postsContentValidation,
-  postsShortDescriptionValidation,
-  postsTitleValidation,
-  postsBloggerIdValidation,
+  [...postsErrorHandler],
   blogger_validation_middleware,
   (req: Request, res: Response) => {
     const { title, shortDescription, content, bloggerId } = req.body;
@@ -50,10 +40,7 @@ postsRouter.post(
 
 postsRouter.put(
   "/:id",
-  postsContentValidation,
-  postsShortDescriptionValidation,
-  postsTitleValidation,
-  postsBloggerIdValidation,
+  [...postsErrorHandler],
   blogger_validation_middleware,
   (req: Request, res: Response) => {
     const { title, shortDescription, content, bloggerId } = req.body;
