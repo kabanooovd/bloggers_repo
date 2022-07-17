@@ -23,7 +23,6 @@ postsRouter.get("/:id", (req: Request, res: Response) => {
 postsRouter.post(
   "/",
   [...postsErrorHandler],
-  blogger_validation_middleware,
   (req: Request, res: Response) => {
     const { title, shortDescription, content, bloggerId } = req.body;
 
@@ -41,7 +40,6 @@ postsRouter.post(
 postsRouter.put(
   "/:id",
   [...postsErrorHandler],
-  blogger_validation_middleware,
   (req: Request, res: Response) => {
     const { title, shortDescription, content, bloggerId } = req.body;
     const { id } = req.params;

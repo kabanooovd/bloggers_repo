@@ -1,4 +1,5 @@
 import { body } from "express-validator";
+import { blogger_validation_middleware } from "../middle-ware/error-handler-middleware";
 
 const bloggerNameValidation = body("name")
   .trim()
@@ -12,4 +13,5 @@ const bloggerUrlValidation = body("youtubeUrl")
 export default [
   bloggerNameValidation,
   bloggerUrlValidation,
+  blogger_validation_middleware,
 ]

@@ -23,7 +23,6 @@ bloggersRouter.get("/:id", (req: Request, res: Response) => {
 bloggersRouter.post(
   "/",
   [...bloggersErrorHandler],
-  blogger_validation_middleware,
   (req: Request, res: Response) => {
     const { name, youtubeUrl } = req.body;
     const newBlogger = bloggersRepo.createBlogger(name, youtubeUrl);
@@ -34,7 +33,6 @@ bloggersRouter.post(
 bloggersRouter.put(
   "/:id",
   [...bloggersErrorHandler],
-  blogger_validation_middleware,
   (req: Request, res: Response) => {
     const { name, youtubeUrl } = req.body;
     const { id } = req.params;

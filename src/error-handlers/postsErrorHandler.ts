@@ -1,5 +1,6 @@
 import { body } from "express-validator";
 import { bloggers_db } from "../common_db";
+import { blogger_validation_middleware } from "../middle-ware/error-handler-middleware";
 
 const bloggers = bloggers_db;
 
@@ -29,4 +30,5 @@ export default [
   postsShortDescriptionValidation,
   postsTitleValidation,
   postsBloggerIdValidation,
+  blogger_validation_middleware,
 ];
