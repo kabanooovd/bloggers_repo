@@ -14,8 +14,11 @@ export const authMiddleware = (
     res.status(401).send("Not authorized");
     return;
   }
+  if (authorization.split(" ")[0] !== "Basic") {
+    res.status(401).send("Incorrect authorization");
+    return;
+  }
   const incomedCreds = basicDecoder(authorization.split(" ")[1]);
-  // console.log(req.body)
   for (let i = 0; i <= hardCodedCreds.length - 1; i++) {
     if (hardCodedCreds[i] !== incomedCreds[i]) {
       res.status(401).send("Incorrect credential");
