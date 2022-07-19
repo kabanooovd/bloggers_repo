@@ -19,7 +19,7 @@ app.use("/posts", checkIpMiddleware, postsRouter);
 app.set('trust proxy', true)
 
 app.get("/", checkIpMiddleware, (req: Request, res: Response) => {
-  res.send("dimas test 11111");
+  res.send("dimas test");
 });
 
 app.listen(port, () => {

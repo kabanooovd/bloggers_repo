@@ -63,7 +63,7 @@ postsRouter.put(
     );
 
     if (!foundPost) {
-      res.status(404).send("Blogger not found");
+      res.status(404).send("Post not found");
       return;
     }
 
