@@ -20,14 +20,16 @@ export const blogger_validation_middleware = (
   const errors = myValidationResult(req);
 
   errors.array().forEach((element) => {
-    const foundItem = outletErrors.find((item: any) => item.field === element.field)
+    const foundItem = outletErrors.find(
+      (item: any) => item.field === element.field
+    );
     if (!foundItem) {
-      outletErrors.push(element)
+      outletErrors.push(element);
     }
   });
 
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errorsMessages: outletErrors});
+    return res.status(400).json({ errorsMessages: outletErrors });
   } else {
     next();
   }

@@ -3,7 +3,7 @@ import { blogger_validation_middleware } from "../middle-ware/error-handler-midd
 
 const bloggerNameValidation = body("name")
   .trim()
-  .isLength({ min: 1, max: 30 })
+  .isLength({ min: 1, max: 15 })
   .withMessage("Name is incorrect");
 
 const bloggerUrlValidation = body("youtubeUrl")
