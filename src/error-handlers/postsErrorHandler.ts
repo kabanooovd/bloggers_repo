@@ -1,6 +1,8 @@
 import { body } from "express-validator";
+// import { bloggers_db } from "../common_db";
 import { blogger_validation_middleware } from "../middle-ware/error-handler-middleware";
 
+// const bloggers = bloggers_db;
 
 const postsContentValidation = body("content")
   .trim()
@@ -20,6 +22,7 @@ const postsTitleValidation = body("title")
 const postsBloggerIdValidation = body("bloggerId")
   .isInt()
   .custom((value) => typeof value === "number") // If income val is Number
+  // .custom((value) => bloggers.map((b) => b.id).includes(value)) // If income val is exist in bloggers list
   .withMessage("Some poblem with current user...");
 
 export default [

@@ -28,6 +28,13 @@ postsRouter.post(
   (req: Request, res: Response) => {
     const { title, shortDescription, content, bloggerId } = req.body;
 
+    const foumdBlogger = bloggersRepo.findBlogger(+bloggerId);
+
+    if (!foumdBlogger) {
+      res.status(400).send("Blogger not found");
+      return;
+    }
+
     const createdPost = postsRepo.createPost(
       bloggerId,
       title,
