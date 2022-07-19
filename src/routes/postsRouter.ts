@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import postsRepo from "../repositories/posts-repo";
 import postsErrorHandler from "../error-handlers/postsErrorHandler";
 import { authMiddleware } from "../middle-ware/auth-middleware";
+import bloggersRepo from "../repositories/bloggers-repo";
 
 const postsRouter = Router({});
 
@@ -46,6 +47,13 @@ postsRouter.put(
     const { title, shortDescription, content, bloggerId } = req.body;
     const { id } = req.params;
 
+    const foumdBlogger = bloggersRepo.findBlogger(+bloggerId);
+
+    if (!foumdBlogger) {
+      res.status(404).send("Blogger not found");
+      return;
+    }
+
     const foundPost = postsRepo.updatePost(
       bloggerId,
       title,
@@ -53,6 +61,12 @@ postsRouter.put(
       content,
       +id
     );
+
+    if (!foundPost) {
+      res.status(404).send("Blogger not found");
+      return;
+    }
+
     res.status(204).send(foundPost);
   }
 );
