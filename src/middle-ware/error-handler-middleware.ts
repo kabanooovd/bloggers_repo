@@ -6,21 +6,28 @@ export const blogger_validation_middleware = (
   res: Response,
   next: NextFunction
 ) => {
-
   const myValidationResult = validationResult.withDefaults({
-    formatter: error => {
-        return {
-            message: error.msg,
-            field: error.param
-        }
-    }
-  })
+    formatter: (error) => {
+      return {
+        message: error.msg,
+        field: error.param,
+      };
+    },
+  });
+
+  const outletErrors: any = [];
 
   const errors = myValidationResult(req);
 
+  errors.array().forEach((element) => {
+    const foundItem = outletErrors.find((item: any) => item.field === element.field)
+    if (!foundItem) {
+      outletErrors.push(element)
+    }
+  });
 
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errorsMessages: errors.array() });
+    return res.status(400).json({ errorsMessages: outletErrors});
   } else {
     next();
   }
