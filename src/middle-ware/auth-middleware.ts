@@ -8,9 +8,7 @@ export const authMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  if (!Object.keys(req.body).length) {
-    res.status(401).send("Not authorized");
-  }
+
   const { authorization } = req.headers;
   if (!authorization) {
     res.status(401).send("Not authorized");
