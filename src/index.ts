@@ -3,6 +3,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import bloggersRouter from "./routes/bloggersRoutes";
 import postsRouter from "./routes/postsRouter";
+import { checkIpMiddleware } from "./middle-ware/check-ip-middleware";
 
 const app = express();
 
@@ -12,10 +13,12 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
-app.use("/bloggers", bloggersRouter);
-app.use("/posts", postsRouter);
+app.use("/bloggers", checkIpMiddleware, bloggersRouter);
+app.use("/posts", checkIpMiddleware, postsRouter);
 
-app.get("/", (req: Request, res: Response) => {
+app.set('trust proxy', true)
+
+app.get("/", checkIpMiddleware, (req: Request, res: Response) => {
   res.send("dimas test 11111");
 });
 

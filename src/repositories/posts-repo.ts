@@ -33,6 +33,7 @@ class PostsRepo {
       };
 
       this.postsList.push(newPost);
+      return newPost;
     }
   }
 
