@@ -18,7 +18,7 @@ app.use("/posts", checkIpMiddleware, postsRouter);
 
 app.set('trust proxy', true)
 
-app.get("/", checkIpMiddleware, (req: Request, res: Response) => {
+app.get("/", (req: Request, res: Response) => {
   res.send("dimas test new");
 });
 
